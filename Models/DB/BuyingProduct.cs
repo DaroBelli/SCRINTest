@@ -13,7 +13,7 @@ public partial class BuyingProduct
 
     public int IdClient { get; set; }
 
-    public virtual Client ClientNavigation { get; set; } = new Client();
+    public virtual Client? ClientNavigation { get; set; }
 
     public virtual ICollection<ProductsByuingProduct> ProductsByuingProducts { get; set; } = new List<ProductsByuingProduct>();
 }

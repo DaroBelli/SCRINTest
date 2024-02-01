@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SCRINTest.Context;
 
@@ -11,9 +12,11 @@ using SCRINTest.Context;
 namespace SCRINTest.Migrations
 {
     [DbContext(typeof(ScrintestContext))]
-    partial class ScrintestContextModelSnapshot : ModelSnapshot
+    [Migration("20240201100429_recreateTable4")]
+    partial class recreateTable4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +31,7 @@ namespace SCRINTest.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    b.Property<int?>("ClientNavigationId")
+                    b.Property<int>("ClientNavigationId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Count")
@@ -143,7 +146,9 @@ namespace SCRINTest.Migrations
                 {
                     b.HasOne("SCRINTest.Models.DB.Client", "ClientNavigation")
                         .WithMany("BuyingProducts")
-                        .HasForeignKey("ClientNavigationId");
+                        .HasForeignKey("ClientNavigationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ClientNavigation");
                 });

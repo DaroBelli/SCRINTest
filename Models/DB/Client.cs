@@ -16,5 +16,7 @@ namespace SCRINTest.Models.DB
         public string? Address {  get; set; }
 
         public string? PaymentDetails { get; set; }
+
+        public virtual ICollection<BuyingProduct> BuyingProducts { get; set; } = new List<BuyingProduct>();
     }
 }

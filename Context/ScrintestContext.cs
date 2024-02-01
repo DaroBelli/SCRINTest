@@ -44,7 +44,6 @@ public partial class ScrintestContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Products__3213E83F0F5A9EF5");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(20)
@@ -62,7 +61,6 @@ public partial class ScrintestContext : DbContext
             entity.ToTable("Products_ByuingProducts");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.IdByuingProduct).HasColumnName("idByuingProduct");
             entity.Property(e => e.IdProduct).HasColumnName("idProduct");

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SCRINTest.Context;
 
@@ -11,9 +12,11 @@ using SCRINTest.Context;
 namespace SCRINTest.Migrations
 {
     [DbContext(typeof(ScrintestContext))]
-    partial class ScrintestContextModelSnapshot : ModelSnapshot
+    [Migration("20240201100636_recreateTable5")]
+    partial class recreateTable5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,7 +31,7 @@ namespace SCRINTest.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    b.Property<int?>("ClientNavigationId")
+                    b.Property<int>("ClientNavigationId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Count")
@@ -116,34 +119,38 @@ namespace SCRINTest.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ByuingProductNavigationId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("IdByuingProduct")
-                        .HasColumnType("int")
-                        .HasColumnName("idByuingProduct");
+                        .HasColumnType("int");
 
                     b.Property<int?>("IdProduct")
-                        .HasColumnType("int")
-                        .HasColumnName("idProduct");
+                        .HasColumnType("int");
 
-                    b.HasKey("Id")
-                        .HasName("PK__Orders__3213E83F83D91EEE");
+                    b.Property<int>("ProductNavigationId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("IdByuingProduct");
+                    b.HasKey("Id");
 
-                    b.HasIndex("IdProduct");
+                    b.HasIndex("ByuingProductNavigationId");
 
-                    b.ToTable("Products_ByuingProducts", (string)null);
+                    b.HasIndex("ProductNavigationId");
+
+                    b.ToTable("ProductsByuingProducts");
                 });
 
             modelBuilder.Entity("SCRINTest.Models.DB.BuyingProduct", b =>
                 {
                     b.HasOne("SCRINTest.Models.DB.Client", "ClientNavigation")
                         .WithMany("BuyingProducts")
-                        .HasForeignKey("ClientNavigationId");
+                        .HasForeignKey("ClientNavigationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ClientNavigation");
                 });
@@ -151,33 +158,25 @@ namespace SCRINTest.Migrations
             modelBuilder.Entity("SCRINTest.Models.DB.ProductsByuingProduct", b =>
                 {
                     b.HasOne("SCRINTest.Models.DB.BuyingProduct", "ByuingProductNavigation")
-                        .WithMany("ProductsByuingProducts")
-                        .HasForeignKey("IdByuingProduct")
-                        .HasConstraintName("FK__Orders__buyingPr__3B75D760");
+                        .WithMany()
+                        .HasForeignKey("ByuingProductNavigationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SCRINTest.Models.DB.Product", "ProductNavigation")
-                        .WithMany("ProductsByuingProducts")
-                        .HasForeignKey("IdProduct")
-                        .HasConstraintName("FK__Orders__productI__3A81B327");
+                        .WithMany()
+                        .HasForeignKey("ProductNavigationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ByuingProductNavigation");
 
                     b.Navigation("ProductNavigation");
                 });
 
-            modelBuilder.Entity("SCRINTest.Models.DB.BuyingProduct", b =>
-                {
-                    b.Navigation("ProductsByuingProducts");
-                });
-
             modelBuilder.Entity("SCRINTest.Models.DB.Client", b =>
                 {
                     b.Navigation("BuyingProducts");
-                });
-
-            modelBuilder.Entity("SCRINTest.Models.DB.Product", b =>
-                {
-                    b.Navigation("ProductsByuingProducts");
                 });
 #pragma warning restore 612, 618
         }
